@@ -1,66 +1,71 @@
-<!DOCTYPE html>
-<html lang="en">
-
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-
-<body>
-
-    <?php
-
-    include '../db/connect_to_db.php';
-
-    $conn = get_db_connection("csc335");
+<?php
 
 
+include '../db/connect_to_db.php';
+$loginFailed = false;
+$conn = get_db_connection("csc335");
+session_start();
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    $_SESSION["email"] = $_POST['email'];
+    $_SESSION["pass"] = $_POST['password'];
 
+    $pass1 = crypt($_SESSION["pass"], '$1$somethin$');
+    
+    $passResult = $userResults = $conn->query("select password from users where email='" . $_POST['email'] . "';");
 
-
-    session_start();
-
-    ?>
-
-    <?php
-
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $_SESSION["username"] = $_POST['username'];
-        $_SESSION["pass"] = $_POST['password'];
-
-        $pass = crypt($_SESSION["pass"], '$1$somethin$');
-
-        //now compare this md5 hash with the stored hashed password for this user (if this user exists)
-
-        // forward the user to home page if login was successful.
-        header("Location: home.php");
-    } else {
-
-        //remove all session variables
-        session_unset();
-
-        // destroy the session 
-        session_destroy();
-
-
-    ?>
-
-        <div style="position:relative;left:800px;top:400px;border:solid;width:300px;">
-            <form action="login.php" method="POST" style="position:relative;left:20px;">
-                <p>Please Log in:
-                    <br />
-                    <span>Username <input type="Text" name="username" /> </span>
-                    <br>
-                    <br />
-                    <span>Password <input type="password" name="password" /> </span>
-                </p>
-                <input type="Submit" value="Log in" />
-            </form>
-        </div>
-
-    <?php
+    if ($passResult->num_rows > 0) {
+        if ($pass1 == $passResult->fetch_assoc()['password']) {
+            echo "PASSWORDS MATCH!";
+            header("Location: /petSocialMedia/user/home.php");
+        } else {
+            $loginFailed = true;
+            session_unset(); 
+            session_destroy(); 
+            $_SESSION = array();
+        }
+    } 
+    else {
+        $loginFailed = true;
+        session_unset(); 
+        session_destroy(); 
+        $_SESSION = array();
     }
+    //now compare this md5 hash with the stored hashed password for this user (if this user exists)
 
-    ?>
+
+} 
+
+    // //remove all session variables
+    // session_unset();
+
+    // // destroy the session 
+    // session_destroy();
+    // $loggedIn = false;
+    // echo $loggedIn;
+
+    include "../components/head.php";
+    include "../components/navbar.php";
+
+?>
+
+    <div class="container">
+        <div class="row">
+            <div class="col p-3">
+                <form action="login.php" method="POST" class="form-group">
+                    <?php
+                        if ($loginFailed) {
+                            echo "<p class='text-danger font-weight-bold'>Username or password incorrect.</p>";
+                        }
+                    ?>
+                    <p>Please Log in:
+                        <br />
+                        <span class="input-group-text">Email <input class="form-control" type="Text" name="email" /> </span>
+                        <br>
+                        <br />
+                        <span class="input-group-text">Password <input class="form-control" type="password" name="password" /> </span>
+                    </p>
+                    <div class="text-center"><input class="btn btn-primary" type="Submit" value="Log in" /></div>
+                </form>
+            </div>
+        </div>
+    </div>
