@@ -1,5 +1,6 @@
 
 <!-- Navbar component - Inject (include "../components/navbar.php) navbar in other php files -->
+
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
 <a class="navbar-brand" href="#">Pet Social Media</a>
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
@@ -15,13 +16,20 @@
     ?>
     <ul class="navbar-nav">
         <li class="nav-item active">
-            <a class="nav-link" href="/petSocialMedia/user/home.php">Home <span class="sr-only">(current)</span></a>
+            <a class="nav-link" href="/petSocialMedia/main/home.php">Home <span class="sr-only">(current)</span></a>
         </li>
 
             <!-- Show logout button if logged in -->
             <?php
             if (isset($_SESSION['email'])){ 
                 ?>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/petSocialMedia/user/dashboard.php">
+                        Dashboard
+                    </a>
+                </li>
+
                 <li class="nav-item">
                 <a class="nav-link" href="/petSocialMedia/login/logout.php">
                     Logout

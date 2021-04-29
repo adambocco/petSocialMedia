@@ -1,31 +1,34 @@
 <?php
 
-
 include '../db/connect_to_db.php';
-$loginFailed = false;
+
 $conn = get_db_connection("csc335");
+
+$loginFailed = false;
+
 session_start();
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $_SESSION["email"] = $_POST['email'];
-    $_SESSION["pass"] = $_POST['password'];
 
-    $pass1 = crypt($_SESSION["pass"], '$1$somethin$');
+    $pass1 = crypt($_POST["password"], '$1$somethin$');
     
-    $passResult = $userResults = $conn->query("select password from users where email='" . $_POST['email'] . "';");
-
+    $passResult = $userResults = $conn->query("select * from users where email='" . $_POST['email'] . "';");
+    
     if ($passResult->num_rows > 0) {
-        if ($pass1 == $passResult->fetch_assoc()['password']) {
-            echo "PASSWORDS MATCH!";
-            header("Location: /petSocialMedia/user/home.php");
+        $userAssoc = $passResult->fetch_assoc();
+        if ($pass1 == $userAssoc['PASSWORD']) {
+            
+            $_SESSION["email"] = $_POST['email'];
+            $_SESSION["pass"] = $_POST['password'];
+            $_SESSION["firstName"] = $userAssoc['firstName'];
+            $_SESSION["lastName"] = $userAssoc['lastName'];
+
+            header("Location: /petSocialMedia/user/dashboard.php");
         } else {
             $loginFailed = true;
-            session_unset(); 
-            session_destroy(); 
-            $_SESSION = array();
         }
     } 
-    else {
-        $loginFailed = true;
+
+    if ($loginFailed == true) {
         session_unset(); 
         session_destroy(); 
         $_SESSION = array();
