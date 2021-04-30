@@ -11,11 +11,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $pass1 = crypt($_POST["password"], '$1$somethin$');
     
-    $passResult = $userResults = $conn->query("select * from users where email='" . $_POST['email'] . "';");
+    $passResult = $userResults = $conn->query("select * from person where email='" . $_POST['email'] . "';");
     
     if ($passResult->num_rows > 0) {
         $userAssoc = $passResult->fetch_assoc();
-        if ($pass1 == $userAssoc['PASSWORD']) {
+        if ($pass1 == $userAssoc['password']) {
             
             $_SESSION["email"] = $_POST['email'];
             $_SESSION["pass"] = $_POST['password'];

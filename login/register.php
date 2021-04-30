@@ -66,7 +66,7 @@ $conn = get_db_connection("csc335");
         if (isset($_POST['email'])) {
             
             // Check if email entered by user exists in the database
-            $userResults = $conn->query("select * from users where email='" . $_POST['email'] . "';");
+            $userResults = $conn->query("select * from person where email='" . $_POST['email'] . "';");
 
             if ($userResults->num_rows > 0) {
                 echo "EMAIL TAKEN";
@@ -75,12 +75,11 @@ $conn = get_db_connection("csc335");
                 $pass = crypt($_POST['password1'], '$1$somethin$');
 
                 // If the email is not taken, create a new user
-                $registerResults = $conn->query("insert into users (email, password, firstName, lastName, createdAt) values 
+                $registerResults = $conn->query("insert into person (email, password, firstName, lastName) values 
                                                 ('" . $_POST['email'] . "',
                                                 '" . $pass . "',
                                                 '" . $_POST['firstName'] . "',
-                                                '" . $_POST['lastName'] . "',
-                                                curdate());");
+                                                '" . $_POST['lastName'] . "');");
 
                 if ($registerResults) {
                     echo "Registration successful!";
@@ -91,9 +90,6 @@ $conn = get_db_connection("csc335");
         }
     include "../components/jsDependencies.php";
     ?>
-
-
-
     
 </body>
 
