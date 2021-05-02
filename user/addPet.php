@@ -26,8 +26,8 @@ include "../components/navbar.php";
                     <form method="POST" action="" class="form-group">
 
                         <div class="p-3">
-                            <label class="input-group-text" for="email">Enter Pet Name: </label>
-                            <input class="form-control" id="email" name="email" type="email">
+                            <label class="input-group-text" for="petName">Enter Pet Name: </label>
+                            <input class="form-control" id="petName" name="petName" type="petName">
                         </div>
 
                         <div class="p-3">
@@ -46,6 +46,24 @@ include "../components/navbar.php";
                     </form>
                 </div>
 
+                <?php
+                if (isset($_POST['petName'])) {
+
+                // create pet name in db
+                $registerResults = $conn->query("insert into pet (name, species, person) values 
+                                                ('" . $_POST['petName'] . "',
+                                                '" . $_POST['species'] . "',
+                                                '" . $_SESSION['email'] . "');");
+
+                if ($registerResults) {
+                    echo "Pet Added!!!";
+                } else {
+                    echo "Something went wrong...";
+                }
+                }
+                
+                include "../components/jsDependencies.php";
+                ?>
 
 
 
