@@ -25,15 +25,21 @@
                 ?>
 
                 <li class="nav-item">
+                    <a class="nav-link" href="/petSocialMedia/main/meetups.php">
+                        Meetups
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link" href="/petSocialMedia/user/dashboard.php">
                         Dashboard
                     </a>
                 </li>
 
                 <li class="nav-item">
-                <a class="nav-link" href="/petSocialMedia/login/logout.php">
-                    Logout
-                </a>
+                    <a class="nav-link" href="/petSocialMedia/login/logout.php">
+                        Logout
+                    </a>
                 </li>
                 <?php
             }

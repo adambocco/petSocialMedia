@@ -32,10 +32,10 @@ CREATE TABLE meetup(
 
  CREATE TABLE attendee(
     meetupID NUMERIC NOT NULL,
-    petID NUMERIC NOT NULL,
+    person VARCHAR(100) NOT NULL,
     maybeAttending BOOLEAN NOT NULL DEFAULT 0,
-    PRIMARY KEY(meetupID, petID),
-    FOREIGN KEY(petID) REFERENCES pet(petID)
+    PRIMARY KEY(meetupID, person),
+    FOREIGN KEY(person) REFERENCES person(email)
 ); 
 
 CREATE TABLE recipe(
