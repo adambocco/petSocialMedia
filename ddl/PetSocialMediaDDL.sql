@@ -8,7 +8,7 @@ CREATE TABLE person(
 ); 
 
 CREATE TABLE pet(
-    petID NUMERIC,
+    petID int auto_increment,
     name VARCHAR(100) NOT NULL,
     species varchar(200),
     person VARCHAR(100) NOT NULL,
@@ -32,7 +32,7 @@ CREATE TABLE meetup(
 
  CREATE TABLE attendee(
     meetupID NUMERIC NOT NULL,
-    petID NUMERIC NOT NULL,
+    petID int NOT NULL,
     maybeAttending BOOLEAN NOT NULL DEFAULT 0,
     PRIMARY KEY(meetupID, petID),
     FOREIGN KEY(petID) REFERENCES pet(petID)
@@ -51,7 +51,7 @@ CREATE TABLE recipe(
 
 CREATE TABLE training(
     trainingID NUMERIC,
-    pet NUMERIC NOT NULL,
+    pet int NOT NULL,
     location VARCHAR(100),
     description VARCHAR(200),
     price VARCHAR(100),
@@ -62,7 +62,7 @@ CREATE TABLE training(
 
 CREATE TABLE trainee(
     trainingID VARCHAR(100),
-    pet NUMERIC,
+    pet int,
     paid NUMERIC,
     completed NUMERIC,
     PRIMARY KEY(trainingID),
@@ -70,8 +70,8 @@ CREATE TABLE trainee(
 );
 
  CREATE TABLE friends(
-    friendOne NUMERIC NOT NULL,
-    friendTwo NUMERIC NOT NULL,
+    friendOne int NOT NULL,
+    friendTwo int NOT NULL,
     friendsSince DATE DEFAULT curdate(),
     PRIMARY KEY(friendOne, friendTwo),
     FOREIGN KEY(friendOne) REFERENCES pet (petID),
@@ -82,7 +82,7 @@ CREATE TABLE post(
     postID NUMERIC,
     title VARCHAR(100) NOT NULL,
     description VARCHAR(500),
-    pet NUMERIC NOT NULL,
+    pet int NOT NULL,
     PRIMARY KEY(postID),
     FOREIGN KEY(pet) REFERENCES pet (petID)
 ); 
@@ -103,7 +103,7 @@ CREATE TABLE picture(
     description VARCHAR(500),
     postID NUMERIC,
     commentID NUMERIC,
-    pet NUMERIC,
+    pet int,
     PRIMARY KEY(filePath),
     FOREIGN KEY(postID) REFERENCES post (postID),
     FOREIGN KEY(commentID) REFERENCES comment (commentID),
@@ -112,7 +112,7 @@ CREATE TABLE picture(
 
 CREATE TABLE bio(
     bioID NUMERIC,
-    pet NUMERIC NOT NULL,
+    pet int NOT NULL,
     aboutMe VARCHAR(500),
     country VARCHAR(200),
     state VARCHAR(100),
