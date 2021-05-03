@@ -25,9 +25,9 @@
                         $result = $conn->query("SELECT * FROM pet WHERE person='{$_SESSION['email']}'");
                         if ($result->num_rows > 0) {
                             while ($row = $result->fetch_assoc()) {
-                                ?> 
-                                <li><?php echo $row['name'];?></li>
-                                <?php
+
+                                echo "<a class='d-block' href='/petSocialMedia/user/petProfile.php?pet=" . $row['petID'] . "'>" . $row['name'] . "</li>";
+
                             }
                         } else {
                             echo "No Pets!";
