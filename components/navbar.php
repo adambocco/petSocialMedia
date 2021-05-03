@@ -25,8 +25,27 @@
                 ?>
 
                 <li class="nav-item">
+                    <a class="nav-link" href="/petSocialMedia/main/searchUsers.php">
+                        Search Users
+                    </a>
+                </li>
+
+                <li class="nav-item">
                     <a class="nav-link" href="/petSocialMedia/main/meetups.php">
                         Meetups
+                    </a>
+                </li>
+
+                <li class="nav-item">
+                    <a class="nav-link" href="/petSocialMedia/main/recipes.php">
+                        Recipes
+                    </a>
+                </li>
+
+                
+                <li class="nav-item">
+                    <a class="nav-link" href="/petSocialMedia/main/training.php">
+                        Training
                     </a>
                 </li>
 

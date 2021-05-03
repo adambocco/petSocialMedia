@@ -17,7 +17,7 @@ CREATE TABLE pet(
 );
 
 CREATE TABLE meetup(
-    meetupID NUMERIC,
+    meetupID int auto_increment,
     creator VARCHAR(100) NOT NULL,
     name VARCHAR(100) NOT NULL,
     description VARCHAR(500),
@@ -31,7 +31,7 @@ CREATE TABLE meetup(
 );
 
  CREATE TABLE attendee(
-    meetupID NUMERIC NOT NULL,
+    meetupID int NOT NULL,
     person VARCHAR(100) NOT NULL,
     maybeAttending BOOLEAN NOT NULL DEFAULT 0,
     PRIMARY KEY(meetupID, person),
@@ -39,7 +39,7 @@ CREATE TABLE meetup(
 ); 
 
 CREATE TABLE recipe(
-    recipeID NUMERIC,
+    recipeID int auto_increment,
     author VARCHAR(100) NOT NULL,
     recipeName VARCHAR(100) NOT NULL,
     description VARCHAR(200),
@@ -50,36 +50,38 @@ CREATE TABLE recipe(
 ); 
 
 CREATE TABLE training(
-    trainingID NUMERIC,
-    pet int NOT NULL,
+    trainingID int auto_increment,
+    trainer VARCHAR(100) not null,
     location VARCHAR(100),
     description VARCHAR(200),
     price VARCHAR(100),
     _date VARCHAR(100),
     PRIMARY KEY(trainingID),
-    FOREIGN KEY(pet) REFERENCES pet (petID)
+    FOREIGN KEY(trainer) REFERENCES person (email)
 ); 
 
 CREATE TABLE trainee(
-    trainingID VARCHAR(100),
+    trainingID int,
     pet int,
     paid NUMERIC,
     completed NUMERIC,
-    PRIMARY KEY(trainingID),
+    PRIMARY KEY(trainingID, pet),
+    FOREIGN KEY(trainingID) REFERENCES training (trainingID),
     FOREIGN KEY(pet) REFERENCES pet (petID)
 );
 
  CREATE TABLE friends(
-    friendOne int NOT NULL,
-    friendTwo int NOT NULL,
+    friendOne varchar(100) NOT NULL,
+    friendTwo varchar(100) NOT NULL,
+    accepted boolean NOT NULL DEFAULT 0,
     friendsSince DATE DEFAULT curdate(),
     PRIMARY KEY(friendOne, friendTwo),
-    FOREIGN KEY(friendOne) REFERENCES pet (petID),
-    FOREIGN KEY(friendTwo) REFERENCES pet (petID)
+    FOREIGN KEY(friendOne) REFERENCES person (email),
+    FOREIGN KEY(friendTwo) REFERENCES person (email)
 ); 
 
 CREATE TABLE post(
-    postID NUMERIC,
+    postID int auto_increment,
     title VARCHAR(100) NOT NULL,
     description VARCHAR(500),
     pet int NOT NULL,
@@ -88,30 +90,31 @@ CREATE TABLE post(
 ); 
 
 CREATE TABLE comment(
-    commentID NUMERIC,
+    commentID int auto_increment,
     body VARCHAR(100),
     createdAt DATE DEFAULT curdate(),
-    postID NUMERIC NOT NULL,
-    pictureID VARCHAR(100),
+    postID int NOT NULL,
+    pictureID int,
     PRIMARY KEY(commentID),
     FOREIGN KEY(postID) REFERENCES post (postID)
 ); 
 
 CREATE TABLE picture(
+    pictureID int auto_increment,
     filePath VARCHAR(100),
     name VARCHAR(100),
     description VARCHAR(500),
-    postID NUMERIC,
-    commentID NUMERIC,
+    postID int,
+    commentID int,
     pet int,
-    PRIMARY KEY(filePath),
+    PRIMARY KEY(pictureID),
     FOREIGN KEY(postID) REFERENCES post (postID),
     FOREIGN KEY(commentID) REFERENCES comment (commentID),
     FOREIGN KEY(pet) REFERENCES pet (petID)
 );
 
 CREATE TABLE bio(
-    bioID NUMERIC,
+    bioID int auto_increment,
     pet int NOT NULL,
     aboutMe VARCHAR(500),
     country VARCHAR(200),
@@ -122,7 +125,7 @@ CREATE TABLE bio(
 );
 
 CREATE TABLE admin(
-    adminID NUMERIC,
+    adminID int auto_increment,
     adminName VARCHAR(100) NOT NULL,
     adminPassword VARCHAR(100) NOT NULL,
     PRIMARY KEY (adminID)

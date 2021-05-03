@@ -7,4 +7,9 @@
 
 
     echo "<h1>HOME PAGE</h1>";
-?>
+    include "../components/jsDependencies.php";
+    ?>
+    
+</body>
+
+</html>

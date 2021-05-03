@@ -57,6 +57,14 @@ include "../components/navbar.php";
 
                 if ($registerResults) {
                     echo "Pet Added!!!";
+
+                    // Add newly created pet to session list of pets for this user
+                    $userPetResults = $conn->query("select * from pet where person='" . $_SESSION['email'] . "';");
+                    $_SESSION['pets'] = array();
+                    while ($row = $userPetResults->fetch_assoc()) {
+                        array_push($_SESSION['pets'], $row);
+                    }
+
                 } else {
                     echo "Something went wrong...";
                 }

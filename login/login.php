@@ -22,6 +22,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION["firstName"] = $userAssoc['firstName'];
             $_SESSION["lastName"] = $userAssoc['lastName'];
 
+            $userPetResults = $conn->query("select * from pet where person='" . $_POST['email'] . "';");
+
+            $_SESSION['pets'] = array();
+            while ($row = $userPetResults->fetch_assoc()) {
+                array_push($_SESSION['pets'], $row);
+            }
+
             header("Location: /petSocialMedia/user/dashboard.php");
         } else {
             $loginFailed = true;
@@ -33,18 +40,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         session_destroy(); 
         $_SESSION = array();
     }
-    //now compare this md5 hash with the stored hashed password for this user (if this user exists)
-
 
 } 
-
-    // //remove all session variables
-    // session_unset();
-
-    // // destroy the session 
-    // session_destroy();
-    // $loggedIn = false;
-    // echo $loggedIn;
 
     include "../components/head.php";
     include "../components/navbar.php";
@@ -72,3 +69,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </div>
+
+<?php
+
+include "../components/jsDependencies.php";
+?>
+
+</body>
+
+</html>
