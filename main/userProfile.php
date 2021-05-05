@@ -30,27 +30,37 @@ $petResults = $conn->query("select * from pet where person='" . $userEmail . "';
 
 echo "<h2 class='p-3 m-3'>Pets: </h2>";
 while ($row = $petResults->fetch_assoc()) {
-
-    echo "<div class='border p-3 m-2' style='background-color:azure;'>";
-    echo "<h3>Pet Name: <span class='text-primary'>" . $row['name'] . "</span></h3>";
-    echo "<h4>Species: <span class='text-primary'>" . $row['species'] . "</span></h3>";
-
+    echo "<div class='row border p-3 m-2' style='background-color:azure;'>";
+        echo "<div class='col'>";
+            echo "<h3>Pet Name: <span class='text-primary'>" . $row['name'] . "</span></h3>";
+            echo "<h4>Species: <span class='text-primary'>" . $row['species'] . "</span></h3>";
+        echo "</div>";
     $bioResults = $conn->query("select * from bio where pet='" . $row['petID'] . "';");
-
+        echo "<div class='col'>";
     if ($bioAssoc = $bioResults->fetch_assoc()) {
         echo "<h4>About Me:</h4> <h3 class='text-primary font-weight-bold'>" . $bioAssoc['aboutMe'] . "</h3>";
         echo "<h4>Country</h4> <h3 class='text-primary'>" . $bioAssoc['country'] . "</h3>";
         echo "<h4>State</h4> <h3 class='text-primary'>" . $bioAssoc['state'] . "</h3>";
         echo "<h4>Town</h4> <h3 class='text-primary'>" . $bioAssoc['town'] . "</h3>";
+    }
 
-        $petPicResults = $conn->query("select * from picture where pet='" . $row['petID'] . "';");
-        echo "<div class='d-flex'>";
-        while ($petPicRow = $petPicResults->fetch_assoc()) {
-            echo "<img class='w-25' src='/petSocialMedia/images/" . $petPicRow['filePath'] . "'>";
-        }
+    echo "</div>";
+    echo "</div>";
+    $petPicResults = $conn->query("select * from picture where pet='" . $row['petID'] . "';");
+
+    if ($petPicResults->num_rows > 0) {
+        echo "<h2>Pictures of {$row['name']}:</h2>";
+        echo "<div class='border p-3 m-3 d-flex justify-content-center' style='background-color:rgb(250,240,240);'>";
+
+    }
+    while ($petPicRow = $petPicResults->fetch_assoc()) {
+        echo "<img class='w-25' src='/petSocialMedia/images/" . $petPicRow['filePath'] . "'>";
+    }
+
+    if ($petPicResults->num_rows > 0) {
         echo "</div>";
     }
-    echo "</div>";
+
 }
 
 echo "<h2>Posts:</h2>";
