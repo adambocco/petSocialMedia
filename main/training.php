@@ -8,14 +8,24 @@
 
 ?>
 
-<h1>Training</h1>
-<a href="addTraining.php">Add Training</a>
 <div class="container">
+<div class="display-4 m-3">Training</div>
+<a class="btn btn-primary ml-4" href="addTraining.php">Add Training</a>
+
 <?php
 
     include '../db/connect_to_db.php';
     
     $conn = get_db_connection("csc335");
+
+
+    if (isset($_POST['petSelect'])) {
+        echo $_POST['petSelect'] . "PETSELECT";
+        echo $_POST['trainingID'] . "TRAININGID";
+        $attendResults = $conn->query("insert into trainee (trainingID, pet) values 
+                                ('" . $_POST['trainingID'] . "',
+                                '" . $_POST['petSelect'] . "');");
+    }
 
     $meetupResults = $conn->query("select * from training;");
 
@@ -34,13 +44,13 @@
         echo "<h3>Price:</h3> <h4 class='text-primary font-weight-bold'>$" . $row['price'] . "</h4>";
         echo "<h3>Date:</h3> <h4 class='text-primary font-weight-bold'>" . $row['_date'] . "</h4>";
         echo "</div>";
-        echo "<div class='col'>";
+        echo "<div class='col border' style='background-color:azure;'>";
         echo "<form method='POST' action='' class='form-group'>";
 
 
 
 
-        echo "<select name='petSelect'>";
+        echo "Choose a Pet to Train: <select style='padding:1em; margin:1em;' name='petSelect'>";
         $selectedSet = false;
         foreach($_SESSION['pets'] as $pet) {
             if (!$selectedSet) {
@@ -62,22 +72,17 @@
         while ($row1 = $attendeeResults->fetch_assoc()) {
             $petTraineeResults = $conn->query("select * from pet where petID=" . $row1['pet'] . ";");
             while ($row2 = $petTraineeResults->fetch_assoc()) {
-                echo "<p class='font-weight-bold'>" . $row2['name']  . "</p>";
-                echo "<p>" . $row2['person']  . "</p>";
+                echo "<div class=' p-1 border'>";
+                echo "Pet: <span class='m-0 p-0 font-weight-bold'>" . $row2['name']  . "</span>";
                 echo "<p class='text-muted'>" . $row2['species']  . "</p>";
+                echo "Person: <span class='m-0 p-0 font-weight-bold'>" . $row2['person']  . "</span>";
+                echo "</div>";
             }
 
         }
         echo "</div>";
         echo "</div>";
         echo "</div>";
-    }
-    if (isset($_POST['petSelect'])) {
-        echo $_POST['petSelect'] . "PETSELECT";
-        echo $_POST['trainingID'] . "TRAININGID";
-        $attendResults = $conn->query("insert into trainee (trainingID, pet) values 
-                                ('" . $_POST['trainingID'] . "',
-                                '" . $_POST['petSelect'] . "');");
     }
 
 ?>

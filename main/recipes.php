@@ -7,10 +7,10 @@
 
 
 ?>
-
-<h1>Recipes</h1>
-<a href="addRecipe.php">Add Recipe</a>
 <div class="container">
+<div class="display-4 m-2 p-2">Recipes</div>
+<a class="btn btn-primary ml-4" href="addRecipe.php">Add Recipe</a>
+
 <?php
 
     include '../db/connect_to_db.php';
@@ -23,14 +23,14 @@
 
 
 
-        echo "<div class='border p-3 m-3'>";
+        echo "<div class='border p-3 m-3' style='background-color:azure;'>";
         echo "<div class='row'>";
         echo "<div class='col'>";
-        echo "<h2>Recipe Name:</h2> <h3 class='text-primary font-weight-bold'>" . $row['recipeName'] . "</h3>";
-        echo "<h3>Author:</h3> <h4 class='text-danger font-weight-bold'>" . $row['author'] . "</h4>";
-        echo "<h3>Desctiption:</h3> <h4 class='text-secondary'>" . $row['description'] . "</h4>";
-        echo "<h3>Ingredients:</h3> <h4 class='text-primary font-weight-bold'>" . $row['ingredients'] . "</h4>";
-        echo "<h3>Time to Make:</h3> <h4 class='text-primary font-weight-bold'>" . $row['timeToMake'] . "</h4>";
+        echo "<h3>Recipe Name:</h3> <h2 class='text-primary font-weight-bold'>" . $row['recipeName'] . "</h2>";
+        echo "<h4>Author:</h4> <h3 class='text-primary font-weight-bold'>" . $row['author'] . "</h3>";
+        echo "<h4>Description:</h4> <div class='border m-1 p-2'><h3 class='text-secondary'>" . $row['description'] . "</h3></div>";
+        echo "<h4>Ingredients:</h4> <h3 class='text-primary'>" . $row['ingredients'] . "</h3>";
+        echo "<h4>Time to Make:</h4> <h3 class='text-primary'>" . $row['timeToMake'] . " minutes</h3>";
         echo "</div>";
         echo "</div>";
         echo "</form>";

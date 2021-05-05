@@ -14,8 +14,8 @@
 <div class="container">
     <div class="row">
         <div class="col">
-        <h3>Users:</h3>
-            <div class="card">
+        <div class="display-4 m-2 p-2">Search All Users:</div>
+            <div class="">
 
                 <ul>
                     <?php 
@@ -38,9 +38,9 @@
                                     continue;
                                 }
                                 ?> 
-                                <li>
+                                <li class="border p-2 m-2">
                                 <?php 
-                                    echo $row['firstName'] . " " . $row['lastName'] . "<br>" . $row['email'];
+                                    echo "<span class='font-weight-bold'>" . $row['firstName'] . " " . $row['lastName'] . "</span><br>" . $row['email'];
                                     
                                     
                                 ?>
@@ -51,6 +51,8 @@
                                         echo "<input type='hidden' name='friendID' value=" . $row['email'] . "></input>";
                                         echo "</form>";
                                     
+                                    } else {
+                                        echo "<div class='font-weight-bold text-success'>Friend</div>";
                                     }
                                     echo "<a href='/petSocialMedia/main/userProfile.php?user=" . $row['email'] . "' class='btn btn-primary'>Visit Page</a>";
                                 ?>

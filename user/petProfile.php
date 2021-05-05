@@ -9,93 +9,13 @@ include "../components/head.php";
 
 include "../components/navbar.php";
 
-$result = $conn->query("SELECT * FROM pet WHERE petID='" . htmlspecialchars($_GET["pet"]) . "'");
-?>
-<div class="container">
-
-
-
-    <div class="row">
-        <div class="col">
-            <?php
-            $petAssoc = $result->fetch_assoc();
-            echo "<h1>" . $petAssoc['name'] . "</h1>";
-            echo "<h3> Species: " . $petAssoc['species'] . "</h3>";
-
-
-            echo "<h2> Pictures: </h2>";
-
-            $picResults = $conn->query("SELECT * FROM picture WHERE pet='" . htmlspecialchars($_GET["pet"]) . "';");
-
-            if ($picResults->num_rows > 0) {
-                while ($row = $picResults->fetch_assoc()) {
-                    echo "<img class='w-50' src='/petSocialMedia/images/" . $row['filePath'] . "'>";
-                }
-            }
-
-
-
-            echo "<h2> Bio: </h2>";
-            $bioResults = $conn->query("SELECT * FROM bio WHERE pet='" . htmlspecialchars($_GET["pet"]) . "';");
-            $bioAssoc = $bioResults->fetch_assoc();
-
-            if ($bioAssoc) {
-
-                echo "<div class='border p-3 m-3'>";
-                echo "<div class='row'>";
-                echo "<div class='col'>";
-                echo "<h2>About Me:</h2> <h3 class='text-primary font-weight-bold'>" . $bioAssoc['aboutMe'] . "</h3>";
-                echo "<h3>Country</h3> <h4 class='text-danger font-weight-bold'>" . $bioAssoc['country'] . "</h4>";
-                echo "<h3>State</h3> <h4 class='text-secondary'>" . $bioAssoc['state'] . "</h4>";
-                echo "<h3>Town</h3> <h4 class='text-primary font-weight-bold'>" . $bioAssoc['town'] . "</h4>";
-                echo "</div>";
-                echo "</div>";
-                echo "</form>";
-                echo "</div>";
-                echo "</div>";
-            } else {
-                echo "No Bio Info Found";
-            }
-
-            ?>
-
-        </div>
-    </div>
-    <div class="row">
-        <div class="col">
-            <h3>Add an Image: </h3>
-            <form action="" method="POST" enctype="multipart/form-data">
-                Select image to upload:
-                <input type="file" name="fileToUpload" id="fileToUpload">
-
-
-                <div class="p-3">
-                    <label class="input-group-text" for="name">Name: </label>
-                    <input class="form-control" id="name" name="name" type="name">
-                </div>
-
-                <div class="p-3">
-                    <label class="input-group-text" for="description">Description: </label>
-                    <input class="form-control" id="description" name="description" type="description">
-                </div>
-                <input type="submit" value="Upload Image" name="submit">
-
-            </form>
-        </div>
-    </div>
-</div>
-<?php
-
-
 // Check if image file is a actual image or fake image
 
 if (isset($_POST["submit"])) {
-    echo $_FILES['fileToUpload']['name'];
     $target_dir = "C:\\xampp\\htdocs\\petSocialMedia\\images\\";
     $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
     $uploadOk = 1;
     $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
-    echo "SUBMITTED";
     $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
     if ($check !== false) {
         echo "File is an image - " . $check["mime"] . ".";
@@ -148,9 +68,84 @@ if (isset($_POST["submit"])) {
 
 
 
+$result = $conn->query("SELECT * FROM pet WHERE petID='" . htmlspecialchars($_GET["pet"]) . "'");
+?>
+<div class="container">
 
 
 
+    <div class="row">
+        <div style="background-color:azure" class="border col m-2 p-3">
+            <?php
+            $petAssoc = $result->fetch_assoc();
+            echo "<div class=' text-center display-3 p-3 m-0 mb-2' style='background-color:skyblue;'>" . $petAssoc['name'] . "</div>";
+            echo "<h3> Species: <span class='font-weight-bold'>" . $petAssoc['species'] . "</span></h3>";
+
+            echo "<div class='border p-3 m-2' style='max-height:50%; background-color:rgb(245, 245, 255);'>";
+            echo "<h2> Pictures: </h2>";
+
+            $picResults = $conn->query("SELECT * FROM picture WHERE pet='" . htmlspecialchars($_GET["pet"]) . "';");
+
+            if ($picResults->num_rows > 0) {
+                while ($row = $picResults->fetch_assoc()) {
+                    echo "<img class='w-25 h-auto' src='/petSocialMedia/images/" . $row['filePath'] . "'>";
+                }
+            }
+            echo "</div>";
+
+
+            echo "<div class='border p-3 m-2' style='background-color:rgb(245, 245, 255);'>";
+            echo "<h2> Bio: </h2>";
+            $bioResults = $conn->query("SELECT * FROM bio WHERE pet='" . htmlspecialchars($_GET["pet"]) . "';");
+            $bioAssoc = $bioResults->fetch_assoc();
+
+            if ($bioAssoc) {
+
+                echo "<div class='border p-3 m-3'>";
+                echo "<div class='row'>";
+                echo "<div class='col'>";
+                echo "<span>About Me:</span> <h3 class='text-primary font-weight-bold'>" . $bioAssoc['aboutMe'] . "</h3>";
+                echo "<span>Country</span> <h4 class='font-weight-bold'>" . $bioAssoc['country'] . "</h4>";
+                echo "<span>State</span> <h4 class='font-weight-bold'>" . $bioAssoc['state'] . "</h4>";
+                echo "<span>Town</span> <h4 class='font-weight-bold'>" . $bioAssoc['town'] . "</h4>";
+                echo "</div>";
+                echo "</div>";
+                echo "</form>";
+                echo "</div>";
+                echo "</div>";
+            } else {
+                echo "No Bio Info Found";
+            }
+
+            ?>
+
+        </div>
+        </div>
+
+    <div class="row">
+        <div class="col border m-2 p-3" style="background-color:rgb(240,240,254);">
+            <h3>Add an Image: </h3>
+            <form action="" method="POST" enctype="multipart/form-data">
+                Select image to upload:
+                <input type="file" name="fileToUpload" id="fileToUpload">
+
+
+                <div class="p-3">
+                    <label class="input-group-text" for="name">Name: </label>
+                    <input class="form-control" id="name" name="name" type="name">
+                </div>
+
+                <div class="p-3">
+                    <label class="input-group-text" for="description">Description: </label>
+                    <input class="form-control" id="description" name="description" type="description">
+                </div>
+                <input type="submit" value="Upload Image" name="submit">
+
+            </form>
+        </div>
+    </div>
+</div>
+<?php
 
 
 include "../components/jsDependencies.php";
