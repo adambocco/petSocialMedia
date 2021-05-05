@@ -2,7 +2,7 @@
 <!-- Navbar component - Inject (include "../components/navbar.php) navbar in other php files -->
 
 <nav class="navbar navbar-expand-lg navbar-light bg-light">
-<a class="navbar-brand" href="#">Pet Social Media</a>
+<a class="navbar-brand" href="#">Pet Social</a>
 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
     <span class="navbar-toggler-icon"></span>
 </button>

@@ -25,11 +25,13 @@ $userResults = ($conn->query("select * from person where email='" . $userEmail .
 
 echo "<div class='container'>";
 echo "<div class='display-4'>" . $userResults['firstName'] . " " . $userResults['lastName'] . "</div>";
+echo "<div class='h3 text-info'>" . $userResults['email'] . "</div>";
 
 $petResults = $conn->query("select * from pet where person='" . $userEmail . "';");
 
 echo "<h2 class='p-3 m-3'>Pets: </h2>";
 while ($row = $petResults->fetch_assoc()) {
+    echo "<div class='m-3 p-2 border' style='background-color:rgb(225,220,235);'>";
     echo "<div class='row border p-3 m-2' style='background-color:azure;'>";
         echo "<div class='col'>";
             echo "<h3>Pet Name: <span class='text-primary'>" . $row['name'] . "</span></h3>";
@@ -60,6 +62,7 @@ while ($row = $petResults->fetch_assoc()) {
     if ($petPicResults->num_rows > 0) {
         echo "</div>";
     }
+    echo "</div>";
 
 }
 

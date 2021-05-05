@@ -12,18 +12,119 @@ include "../components/navbar.php";
 
 
 ?>
+                <?php
 
+// Add Pet
+if (isset($_POST['petName']) && isset($_POST['species'])) {
+    
+    // create pet name in db
+    $registerResults = $conn->query("insert into pet (name, species, person) values 
+                                ('" . $_POST['petName'] . "',
+                                '" . $_POST['species'] . "',
+                                '" . $_SESSION['email'] . "');");
+    $lastPetID = $conn->insert_id;
+
+    if ($registerResults) {
+        $last_id = $conn->insert_id;
+        // Add newly created pet to session list of pets for this user
+        $userPetResults = $conn->query("select * from pet where person='" . $_SESSION['email'] . "';");
+        $_SESSION['pets'] = array();
+        while ($row = $userPetResults->fetch_assoc()) {
+            array_push($_SESSION['pets'], $row);
+        }
+        // Add Bio
+
+        if (isset($_POST['aboutMe']) && isset($_POST['country']) && isset($_POST['state']) && isset($_POST['town'])) {
+
+            // create pet name in db
+            $registerResults = $conn->query("insert into bio (pet, aboutMe, country, state, town) values 
+        ('" . $last_id . "',
+        '" . $_POST['aboutMe'] . "',
+        '" . $_POST['country'] . "',
+        '" . $_POST['state'] . "',
+        '" . $_POST['town'] . "');");
+
+            if (!$registerResults) {
+                echo "Something went wrong...";
+            }
+        }
+        if ($_FILES["fileToUpload"]['name'] != "") {
+            
+            echo "Adding Image: " . $_FILES["fileToUpload"]['name'] . "<br>";
+
+
+            $target_dir = "C:\\xampp\\htdocs\\petSocialMedia\\images\\";
+            $target_file = $target_dir . basename($_FILES["fileToUpload"]["name"]);
+            $uploadOk = 1;
+            $imageFileType = strtolower(pathinfo($target_file, PATHINFO_EXTENSION));
+            $check = getimagesize($_FILES["fileToUpload"]["tmp_name"]);
+            if ($check !== false) {
+                echo "File is an image - " . $check["mime"] . ".";
+                $uploadOk = 1;
+            } else {
+                echo "File is not an image.";
+                $uploadOk = 0;
+            }
+        
+        
+            // Check if file already exists
+            if (file_exists($target_file)) {
+                echo "Sorry, file already exists.";
+                $uploadOk = 0;
+            }
+        
+            // Check file size
+            if ($_FILES["fileToUpload"]["size"] > 5000000) {
+                echo "Sorry, your file is too large.";
+                $uploadOk = 0;
+            }
+        
+            // Allow certain file formats
+            if (
+                $imageFileType != "jpg" && $imageFileType != "png" && $imageFileType != "jpeg"
+                && $imageFileType != "gif"
+            ) {
+                echo "Sorry, only JPG, JPEG, PNG & GIF files are allowed.";
+                $uploadOk = 0;
+            }
+        
+            // Check if $uploadOk is set to 0 by an error
+            if ($uploadOk == 0) {
+                echo "Sorry, your file was not uploaded.";
+                // if everything is ok, try to upload file
+            } else {
+                if (move_uploaded_file($_FILES["fileToUpload"]["tmp_name"], $target_file)) {
+                    echo "The file " . htmlspecialchars(basename($_FILES["fileToUpload"]["name"])) . " has been uploaded.";
+                    
+                    $picInfo = $conn->query("insert into picture (filePath, name, pet, description) values 
+                                            ('" . $_FILES["fileToUpload"]["name"] . "',
+                                            '" . $_POST['picName'] . "',
+                                            '" . $lastPetID . "',
+                                            '" . $_POST['picDescription'] . "');");
+                } else {
+                    echo "Sorry, there was an error uploading your file.";
+                }
+            }
+
+        }
+        header("Location: /petSocialMedia/user/petProfile.php?pet=" . $lastPetID);
+    } else {
+        echo "Something went wrong...";
+    }
+}
+
+include "../components/jsDependencies.php";
+?>
 <div class="container">
     <div class="row">
         <div class="col">
-            <h1>Dashboard</h1>
-            <h3>Hello, <?php echo $_SESSION['firstName'] ?></h3>
+        <div class="display-4 m-3 p-2">Add a Pet:</div>
             <div class="card">
-                <h3>Add a Pet:</h3>
+
 
 
                 <div>
-                    <form method="POST" action="" class="form-group">
+                    <form method="POST" action="" enctype="multipart/form-data" class="form-group">
 
                         <div class="p-3">
                             <label class="input-group-text" for="petName">Enter Pet Name: </label>
@@ -62,61 +163,29 @@ include "../components/navbar.php";
                             <input class="btn btn-primary m-2 text-center" type="submit" value="Add Pet Info">
                         </div>
 
+
+
+
+                        <h3>Add an Image: </h3>
+                        Select image to upload:
+                        <input type="file" name="fileToUpload" id="fileToUpload">
+
+
+                        <div class="p-3">
+                            <label class="input-group-text" for="picName">Name: </label>
+                            <input class="form-control" id="picName" name="picName" type="text">
+                        </div>
+
+                        <div class="p-3">
+                            <label class="input-group-text" for="picDescription">Description: </label>
+                            <input class="form-control" id="picDescription" name="picDescription" type="text">
+                        </div>
+
+
+
+
                     </form>
                 </div>
-
-
-                <?php
-
-                // Add Pet
-                if (isset($_POST['petName']) && isset($_POST['species'])) {
-
-                    // create pet name in db
-                    $registerResults = $conn->query("insert into pet (name, species, person) values 
-                                                ('" . $_POST['petName'] . "',
-                                                '" . $_POST['species'] . "',
-                                                '" . $_SESSION['email'] . "');");
-
-                    if ($registerResults) {
-                        echo "Pet Added!!!";
-                        $last_id = $conn->insert_id;
-                        echo "Last inserted pet ID:" . $last_id;
-                        // Add newly created pet to session list of pets for this user
-                        $userPetResults = $conn->query("select * from pet where person='" . $_SESSION['email'] . "';");
-                        $_SESSION['pets'] = array();
-                        while ($row = $userPetResults->fetch_assoc()) {
-                            array_push($_SESSION['pets'], $row);
-                        }
-                        // Add Bio
-
-                        if (isset($_POST['aboutMe']) && isset($_POST['country']) && isset($_POST['state']) && isset($_POST['town'])) {
-
-                            // create pet name in db
-                            $registerResults = $conn->query("insert into bio (pet, aboutMe, country, state, town) values 
-                        ('" . $last_id . "',
-                        '" . $_POST['aboutMe'] . "',
-                        '" . $_POST['country'] . "',
-                        '" . $_POST['state'] . "',
-                        '" . $_POST['town'] . "');");
-
-                            if ($registerResults) {
-                                echo "Bio Added!!!";
-                            } else {
-                                echo "Something went wrong...";
-                            }
-                        }
-                    } else {
-                        echo "Something went wrong...";
-                    }
-                }
-
-                include "../components/jsDependencies.php";
-                ?>
-
-
-
-
-
             </div>
         </div>
     </div>

@@ -88,7 +88,7 @@ $result = $conn->query("SELECT * FROM pet WHERE petID='" . htmlspecialchars($_GE
 
             if ($picResults->num_rows > 0) {
                 while ($row = $picResults->fetch_assoc()) {
-                    echo "<img class='w-25 h-auto' src='/petSocialMedia/images/" . $row['filePath'] . "'>";
+                    echo "<img class='p-2 m-1 w-25 h-auto' style='border: 3px solid olive;' src='/petSocialMedia/images/" . $row['filePath'] . "'>";
                 }
             }
             echo "</div>";

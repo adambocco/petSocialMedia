@@ -77,7 +77,7 @@ if (isset($_POST['postDelete'])) {
                     $friendEmail = $row['friendTwo'] == $_SESSION['email'] ? $row['friendOne'] : $row['friendTwo'];
                     array_push($friendEmailArray, $friendEmail);
             ?>
-                    <li><?php echo "<a href='/petSocialMedia/main/userProfile.php?user=" . $friendEmail . "' class='btn btn-primary'>" . $friendEmail . "</a>";   ?></li>
+                    <li class="m-2 p-1"><?php echo "<a href='/petSocialMedia/main/userProfile.php?user=" . $friendEmail . "' class='btn btn-primary'>" . $friendEmail . "</a>";   ?></li>
             <?php
                 }
             } else {

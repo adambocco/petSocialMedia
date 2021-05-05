@@ -21,9 +21,39 @@ $conn = get_db_connection("csc335");
     <?php
         include "../components/navbar.php";
     ?>
+    <div class="container">
+    <?php
+
+        if (isset($_POST['email'])) {
+            
+            // Check if email entered by user exists in the database
+            $userResults = $conn->query("select * from person where email='" . $_POST['email'] . "';");
+
+            if ($userResults->num_rows > 0) {
+                echo "EMAIL TAKEN";
+            } else {
+                
+                $pass = crypt($_POST['password1'], '$1$somethin$');
+
+                // If the email is not taken, create a new user
+                $registerResults = $conn->query("insert into person (email, password, firstName, lastName) values 
+                                                ('" . $_POST['email'] . "',
+                                                '" . $pass . "',
+                                                '" . $_POST['firstName'] . "',
+                                                '" . $_POST['lastName'] . "');");
+
+                if ($registerResults) {
+                    echo "<div class='text-success font-weight-bold'>Registration successful!</div>";
+                    echo "<a class='btn btn-info m-4' href='/petSocialMedia/login/login.php'>Login!</a>";
+                } else {
+                    echo "Something went wrong...";
+                }
+            }
+        }
+    ?>
     <!-- NAVBAR -->
 
-    <div class="container">
+
 
         <div>
             <form method="POST" action="" class="form-group">
@@ -63,31 +93,6 @@ $conn = get_db_connection("csc335");
 
     </div>
     <?php
-        if (isset($_POST['email'])) {
-            
-            // Check if email entered by user exists in the database
-            $userResults = $conn->query("select * from person where email='" . $_POST['email'] . "';");
-
-            if ($userResults->num_rows > 0) {
-                echo "EMAIL TAKEN";
-            } else {
-                
-                $pass = crypt($_POST['password1'], '$1$somethin$');
-
-                // If the email is not taken, create a new user
-                $registerResults = $conn->query("insert into person (email, password, firstName, lastName) values 
-                                                ('" . $_POST['email'] . "',
-                                                '" . $pass . "',
-                                                '" . $_POST['firstName'] . "',
-                                                '" . $_POST['lastName'] . "');");
-
-                if ($registerResults) {
-                    echo "Registration successful!";
-                } else {
-                    echo "Something went wrong...";
-                }
-            }
-        }
     include "../components/jsDependencies.php";
     ?>
     
