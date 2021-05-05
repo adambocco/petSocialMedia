@@ -84,9 +84,9 @@ CREATE TABLE post(
     postID int auto_increment,
     title VARCHAR(100) NOT NULL,
     description VARCHAR(500),
-    pet int NOT NULL,
+    person varchar(100) NOT NULL,
     PRIMARY KEY(postID),
-    FOREIGN KEY(pet) REFERENCES pet (petID)
+    FOREIGN KEY(person) REFERENCES person (email)
 ); 
 
 CREATE TABLE comment(
@@ -95,6 +95,7 @@ CREATE TABLE comment(
     createdAt DATE DEFAULT curdate(),
     postID int NOT NULL,
     pictureID int,
+    person varchar(100),
     PRIMARY KEY(commentID),
     FOREIGN KEY(postID) REFERENCES post (postID)
 ); 
