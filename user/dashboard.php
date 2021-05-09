@@ -19,7 +19,6 @@ if (isset($_POST['rejectFriend'])) {
     $friendsResult = $conn->query("DELETE FROM friends WHERE friendOne='{$_SESSION['email']}' and friendTwo='{$_POST['rejectFriend']}';");
 }
 if (isset($_POST['postTitle'])) {
-    echo "INSERT INTO post (title, description, person) VALUES ({$_POST['postTitle']}, {$_POST['postBody']}, {$_SESSION['email']});";
     $postPostResult = $conn->query("INSERT INTO post (title, description, person) VALUES ('{$_POST['postTitle']}', '{$_POST['postBody']}', '{$_SESSION['email']}');");
 }
 

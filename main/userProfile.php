@@ -17,6 +17,16 @@ if (isset($_POST['commentDelete'])) {
     $postCommentResult = $conn->query("DELETE FROM comment WHERE commentID =" . $_POST['commentDelete'] . ";");
 
 }
+if (isset($_POST['deletePost'])) {
+    echo "DELETITNGPOST";
+    $postCommentResult = $conn->query("DELETE FROM post WHERE postID ='" . $_POST['deletePost'] . "';");
+    echo $postCommentResult;
+
+}
+if (isset($_POST['deleteComment'])) {
+    $postCommentResult = $conn->query("DELETE FROM comment WHERE commentID =" . $_POST['deleteComment'] . ";");
+
+}
 
 
 $userEmail = htmlspecialchars($_GET["user"]);
@@ -72,8 +82,15 @@ $postResults = $conn->query("select * from post where person='" . $userEmail . "
 while ($row = $postResults->fetch_assoc()) {
     echo "<div class='border p-2 m-2' style='background-color:rgb(240,250,230);'>";
     echo "<h3>" . $row['title'] . "</h3>";
+    if ($_SESSION['isAdmin'] == "1") {
+        echo "<form action='' method='POST'>";
+        echo "<button type='submit' class='btn btn-danger float-right'>Delete Post</button>";
+        echo "<input type='hidden' name='deletePost' value=" . $row['postID'] . "></input>";
+        echo "</form>";
+    }
     echo "<p>" . $row['description'] . "</p>";
     $postPictureResult = $conn->query("select * from picture where postID='" . $row['postID'] . "';");
+
     if ($postPictureResult->num_rows > 0) {
         while ($picRow = $postPictureResult->fetch_assoc()) {
             echo "<p>" . $picRow['name'] . "</p>";
@@ -93,6 +110,12 @@ while ($row = $postResults->fetch_assoc()) {
             echo "<p>" . $commentRow['body'] . "</p>";
 
             echo "</div>";
+            if ($_SESSION['isAdmin'] == "1") {
+                echo "<form action='' method='POST'>";
+                echo "<button type='submit' class='btn btn-danger float-right'>Delete Comment</button>";
+                echo "<input type='hidden' name='deleteComment' value=" . $commentRow['commentID'] . "></input>";
+                echo "</form>";
+            }
             if ($commentRow['person'] == $_SESSION['email']) {
                 echo "<div class='col-4'>";
                 echo "<form method='POST' action='' class='form-group'>";
@@ -111,8 +134,6 @@ while ($row = $postResults->fetch_assoc()) {
 
 
 
-
-
             $commentPictureResult = $conn->query("select * from picture where commentID='" . $commentRow['commentID'] . "';");
             if ($commentPictureResult->num_rows > 0) {
                 while ($commentPicRow = $commentPictureResult->fetch_assoc()) {
@@ -124,6 +145,7 @@ while ($row = $postResults->fetch_assoc()) {
             echo "<hr>";
         }
     }
+
     echo "<form method='POST' action='' class='form-group'>";
     echo "<div class='p-1'>";
         echo "<label class='input-group-text' for='commentPostBody'>Body: </label>";

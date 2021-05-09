@@ -21,6 +21,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $_SESSION["pass"] = $_POST['password'];
             $_SESSION["firstName"] = $userAssoc['firstName'];
             $_SESSION["lastName"] = $userAssoc['lastName'];
+            $_SESSION["isAdmin"] = $userAssoc['isAdmin'];
 
             $userPetResults = $conn->query("select * from pet where person='" . $_POST['email'] . "';");
 

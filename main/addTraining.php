@@ -15,12 +15,6 @@
 
     if (isset($_POST['price']) && isset($_POST['description']) && isset($_POST['date']) && isset($_POST['price'])) {
             
-        echo ("insert into training (trainer, location, description, price, _date) values 
-        ('" . $_SESSION['email'] . "',
-        '" . $_POST['location'] . "',
-        '" . $_POST['description'] . "',
-        '" . $_POST['price'] . "',
-        '" . $_POST['date'] . "');");
         // If the email is not taken, create a new user
         $meetupAddResults = $conn->query("insert into training (trainer, location, description, price, _date) values 
                                         ('" . $_SESSION['email'] . "',

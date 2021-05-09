@@ -3,6 +3,7 @@ CREATE TABLE person(
     password VARCHAR(200) NOT NULL,
     firstName VARCHAR(100) NOT NULL,
     lastName VARCHAR(100) NOT NULL,
+    isAdmin bool DEFAULT 0,
     createdAt DATE NOT NULL DEFAULT curdate(),
     PRIMARY KEY(email)
 ); 
@@ -98,6 +99,7 @@ CREATE TABLE comment(
     person varchar(100),
     PRIMARY KEY(commentID),
     FOREIGN KEY(postID) REFERENCES post (postID)
+    ON DELETE CASCADE
 ); 
 
 CREATE TABLE picture(
@@ -123,11 +125,4 @@ CREATE TABLE bio(
     town VARCHAR(200),
     PRIMARY KEY(bioID),
     FOREIGN KEY(pet) REFERENCES pet (petID)
-);
-
-CREATE TABLE admin(
-    adminID int auto_increment,
-    adminName VARCHAR(100) NOT NULL,
-    adminPassword VARCHAR(100) NOT NULL,
-    PRIMARY KEY (adminID)
 );

@@ -16,6 +16,10 @@
     if (isset($_POST['acceptFriendID'])) {
         $result = $conn->query("UPDATE friends SET accepted=1 WHERE friendTwo='" . $_POST['acceptFriendID'] . "';");
     }
+
+    if (isset($_POST['deletePerson'])) {
+        $result = $conn->query("DELETE FROM person WHERE email='" . $_POST['deletePerson'] . "';");
+    }
     
 
 ?>
@@ -59,6 +63,12 @@
                                 <?php 
                                     echo "<span class='font-weight-bold'>" . $row['firstName'] . " " . $row['lastName'] . "</span><br>" . $row['email'];
                                     
+                                    if ($_SESSION['isAdmin'] == "1") {
+                                        echo "<form action='' method='POST'>";
+                                        echo "<button type='submit' class='btn btn-danger float-right'>Delete Account</button>";
+                                        echo "<input type='hidden' name='deletePerson' value=" . $row['email'] . "></input>";
+                                        echo "</form>";
+                                    }
                                     
                                 ?>
                                 <?php 
